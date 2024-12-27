@@ -10,12 +10,24 @@ public class Video {
     private String categoria;
     private Date dataPublicacao;
 
-    public Video(String titulo, String descricao, int duracao, String categoria, Date dataPublicacao) {
+
+    public Video(String titulo, String descricao, int duracao, String categoria, Date dataPublicacao) throws illegalArgumentException {
+
+        if (titulo == null || titulo.isEmpty()) throw new illegalArgumentException("Título não pode ser vazio.");
+        if (descricao == null || descricao.isEmpty()) throw new illegalArgumentException("Descrição não pode ser vazio.");
+        if (duracao <= 0) throw new illegalArgumentException("Duração deve ser um número positivo.");
+        if (categoria == null || categoria.isEmpty()) throw new illegalArgumentException("Categoria não pode ser vazia.");
+        if (dataPublicacao == null) throw new illegalArgumentException("Data de publicação inválida.");
+
         this.titulo = titulo;
         this.descricao = descricao;
         this.duracao = duracao;
         this.categoria = categoria;
         this.dataPublicacao = dataPublicacao;
+    }
+
+    public static Video fromString(String line) {
+        return null;
     }
 
     public String getTitulo() {
@@ -41,16 +53,7 @@ public class Video {
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        return titulo + ";" + descricao + ";" + duracao + ";" + categoria + ";" + sdf.format(dataPublicacao);
+        return String.format("Título: %s | Descricao %s | Duracao %s min | Categoria $s | Data: %s", titulo, descricao, duracao, categoria, sdf.format(dataPublicacao));
     }
 
-    public static Video fromString(String linha) {
-        try {
-            String[] partes = linha.split(";");
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            return new Video(partes[0], partes[1], Integer.parseInt(partes[2]), partes[3], sdf.parse(partes[4]));
-        } catch (Exception e) {
-            return null; // Ignora erros de parsing
-        }
-    }
 }
