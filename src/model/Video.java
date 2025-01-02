@@ -1,5 +1,6 @@
 package model;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -27,6 +28,7 @@ public class Video {
         this.categoria = categoria;
         this.dataPublicacao = dataPublicacao;
     }
+
     public String getTitulo() {
         return titulo;
     }
@@ -46,6 +48,7 @@ public class Video {
     public Date getDataPublicacao() {
         return dataPublicacao;
     }
+
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -65,4 +68,24 @@ public class Video {
 
     }
 
+    public Video atualizarVideo(String novoTitulo, String novaDescricao, int novaDuracao, String novaCategoria, String novaDataStr) throws illegalArgumentException, ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Date novaData = novaDataStr.isEmpty() ? this.dataPublicacao : sdf.parse(novaDataStr);
+        return new Video(
+                novoTitulo.isEmpty() ? this.titulo : novoTitulo,
+                novaDescricao.isEmpty() ? this.descricao : novaDescricao,
+                novaDuracao == 0 ? this.duracao : novaDuracao,
+                novaCategoria.isEmpty() ? this.categoria : novaCategoria,
+                novaData
+        );
+    }
+    public String toCSV() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        return String.format("%s;%s;%d;%s;%s", titulo, descricao ,duracao ,categoria, sdf.format(dataPublicacao));
+    }
+
+    public Object getId() {
+        return null;
+    }
 }
+

@@ -39,4 +39,22 @@ public class FileVideoRepository implements VideoRepository {
         }
         return videos;
     }
+
+    @Override
+    public void update(Video updatedVideo, String tituloOriginal) {
+        List<Video> videos = findAll();
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            for (Video video : videos) {
+                if (video.getTitulo().equals(tituloOriginal)) {
+                    bw.write(updatedVideo.toCSV());
+                } else {
+                    bw.write(video.toCSV());
+                }
+                bw.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Erro ao atualizar o vídeo: " + e.getMessage());
+        }
+    }
+
 }
