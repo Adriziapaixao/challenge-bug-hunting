@@ -42,6 +42,7 @@ public class Main {
                 case 5 -> filtrarVideoPorCategoria();
                 case 6 -> ordenarPorDataPublicacao();
                 case 7 -> exibirRelatorioEstatisticas();
+                case 8 -> deleteVideo();
                 case 9 -> {
                     System.out.println("Saindo do sistema...");
                     return;
@@ -174,6 +175,7 @@ public class Main {
         }
 
     }
+
     private static void exibirRelatorioEstatisticas() {
         List<Video> videos = videoService.listVideos();
 
@@ -217,6 +219,44 @@ public class Main {
         }
     }
 
+    private static void deleteVideo() {
+        // Solicita ao usuário o título do vídeo que deseja excluir
+        String titulo = lerString("Digite o título do vídeo que deseja excluir: ");
+
+        // Busca os vídeos correspondentes ao título fornecido
+        List<Video> resultados = videoService.listVideos().stream()
+                .filter(video -> video.getTitulo().equalsIgnoreCase(titulo))
+                .toList();
+
+        if (resultados.isEmpty()) {
+            System.out.println("Nenhum vídeo encontrado com o título fornecido.");
+        } else {
+            // Exibe os vídeos encontrados
+            System.out.println("Vídeos encontrados:");
+            for (int i = 0; i < resultados.size(); i++) {
+                System.out.println((i + 1) + ". " + resultados.get(i));
+            }
+
+            // Solicita ao usuário qual vídeo deseja excluir
+            int escolha = lerInteiro("Digite o número do vídeo que deseja excluir (ou 0 para cancelar): ");
+
+            if (escolha > 0 && escolha <= resultados.size()) {
+                Video videoParaExcluir = resultados.get(escolha - 1);
+
+                // Remove o vídeo da lista e atualiza o repositório
+                List<Video> listaAtualizada = videoService.listVideos().stream()
+                        .filter(video -> !video.equals(videoParaExcluir))
+                        .toList();
+
+                videoService.updateVideoList(listaAtualizada);
+
+                System.out.println("Vídeo excluído com sucesso!");
+            } else {
+                System.out.println("Operação cancelada.");
+            }
+        }
+    }
+
     private static Date lerDataValida(String mensagem) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         sdf.setLenient(false); // Garante que apenas datas válidas sejam aceitas
@@ -251,6 +291,8 @@ public class Main {
             }
         }
     }
+
+
 }
 
 

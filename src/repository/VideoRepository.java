@@ -12,5 +12,5 @@ public interface VideoRepository {
 
     void update(Video updatedVideo, String tituloOriginal);
 
-    void delete(Video video);
+    void saveAll(List<Video> videos);
 }

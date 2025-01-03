@@ -11,8 +11,9 @@ public interface VideoService {
     void updateVideo(Video updatedVideo, Video videoAtualizado);
     void salvarVideosNoArquivo(List<Video> videos) throws IOException;
     List<Video> searchVideos(String query);
-
     List<Video> ordenarPorDataPublicacao(List<Video> videos);
 
     List<Video> listVideosOrderedByDate();
+
+    void updateVideoList(List<Video> videos);
 }

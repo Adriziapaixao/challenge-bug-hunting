@@ -57,11 +57,16 @@ public class FileVideoRepository implements VideoRepository {
         }
     }
 
-    @Override
-    public void delete(Video video) {
-
+    public void saveAll(List<Video> videos) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            for (Video video : videos) {
+                writer.write(video.toCSV());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao salvar os vídeos no arquivo.", e);
+        }
     }
-
 
     /**
      * Retorna todos os vídeos organizados por data de publicação.

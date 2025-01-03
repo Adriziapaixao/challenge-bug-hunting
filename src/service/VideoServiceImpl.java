@@ -48,14 +48,15 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    public void updateVideoList(List<Video> videos) {
+        repository.saveAll(videos);
+    }
+
+    @Override
     public List<Video> listVideosOrderedByDate() {
         if (repository instanceof FileVideoRepository) {
             return ((FileVideoRepository) repository).findAllOrderedByDate();
         }
         throw new UnsupportedOperationException("Repositório não suporta ordenação por data.");
     }
-
-
-
-
 }
