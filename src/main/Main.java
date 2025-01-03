@@ -39,6 +39,7 @@ public class Main {
                 case 3 -> pesquisarVideoPorTitulo();
                 case 4 -> editarVideo();
                 case 5 -> filtrarVideoPorCategoria();
+                case 6 -> ordenarPorDataPublicacao();
                 case 9 -> {
                     System.out.println("Saindo do sistema...");
                     return;
@@ -56,7 +57,7 @@ public class Main {
         System.out.println("3. Pesquisar vídeo por título");
         System.out.println("4. Editar vídeo");
         System.out.println("5. Filtrar vídeo por categoria");
-        System.out.println("5. Ordenar vídeos por data de publicação.");
+        System.out.println("6. Ordenar vídeos por data de publicação.");
         System.out.println("7. Relatório de estatísticas.");
         System.out.println("8. Excluir vídeo");
         System.out.println("9. SAIR");
@@ -152,6 +153,24 @@ public class Main {
                         " | Duração: " + video.getDuracao() + "min | Data de Publicação: " + video.getDataPublicacao());
             });
         }
+    }
+
+    private static void ordenarPorDataPublicacao() {
+        // Obtém a lista de vídeos ordenados por data de publicação
+        List<Video> videosOrdenados = videoService.listVideosOrderedByDate();
+
+        if (videosOrdenados.isEmpty()) {
+            System.out.println("Nenhum vídeo encontrado.");
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            System.out.println("Vídeos ordenados por data de publicação:");
+            videosOrdenados.forEach(video -> {
+                String dataFormatada = sdf.format(video.getDataPublicacao());
+                System.out.println("Título: " + video.getTitulo() + " | " + video.getDescricao() + " | " +
+                        video.getCategoria() + " | " + video.getDuracao() + "min | " + dataFormatada);
+            });
+        }
+
     }
 
     private static Date lerDataValida(String mensagem) {

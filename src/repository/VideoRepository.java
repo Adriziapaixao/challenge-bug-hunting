@@ -11,4 +11,6 @@ public interface VideoRepository {
     List<Video> findAll();
 
     void update(Video updatedVideo, String tituloOriginal);
+
+    void delete(Video video);
 }

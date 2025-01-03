@@ -1,6 +1,7 @@
 package service;
 
 import model.Video;
+import repository.FileVideoRepository;
 import repository.VideoRepository;
 
 import java.io.IOException;
@@ -40,6 +41,21 @@ public class VideoServiceImpl implements VideoService {
     public List<Video> searchVideos(String query) {
         return List.of();
     }
+
+    @Override
+    public List<Video> ordenarPorDataPublicacao(List<Video> videos) {
+        return List.of();
+    }
+
+    @Override
+    public List<Video> listVideosOrderedByDate() {
+        if (repository instanceof FileVideoRepository) {
+            return ((FileVideoRepository) repository).findAllOrderedByDate();
+        }
+        throw new UnsupportedOperationException("Repositório não suporta ordenação por data.");
+    }
+
+
 
 
 }

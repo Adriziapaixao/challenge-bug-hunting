@@ -57,4 +57,19 @@ public class FileVideoRepository implements VideoRepository {
         }
     }
 
+    @Override
+    public void delete(Video video) {
+
+    }
+
+
+    /**
+     * Retorna todos os vídeos organizados por data de publicação.
+     *
+     * @return Lista de vídeos ordenada por data de publicação.
+     */
+    public List<Video> findAllOrderedByDate() {
+        List<Video> videos = findAll();
+        return Video.organizarPorDataPublicacao(videos);
+    }
 }
