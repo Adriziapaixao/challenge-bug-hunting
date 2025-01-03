@@ -9,6 +9,7 @@ import strategy.SearchStrategy;
 import strategy.TitleSearchStrategy;
 
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -40,6 +41,7 @@ public class Main {
                 case 4 -> editarVideo();
                 case 5 -> filtrarVideoPorCategoria();
                 case 6 -> ordenarPorDataPublicacao();
+                case 7 -> exibirRelatorioEstatisticas();
                 case 9 -> {
                     System.out.println("Saindo do sistema...");
                     return;
@@ -171,6 +173,48 @@ public class Main {
             });
         }
 
+    }
+    private static void exibirRelatorioEstatisticas() {
+        List<Video> videos = videoService.listVideos();
+
+        if (videos.isEmpty()) {
+            System.out.println("Nenhum vídeo encontrado para gerar o relatório.");
+            return;
+        }
+
+        // Quantidade total de vídeos
+        int totalVideos = videos.size();
+
+        // Duração média dos vídeos
+        double duracaoMedia = videos.stream()
+                .mapToInt(Video::getDuracao)
+                .average()
+                .orElse(0);
+
+        // Vídeo mais antigo
+        Video videoMaisAntigo = videos.stream()
+                .min(Comparator.comparing(Video::getDataPublicacao))
+                .orElse(null);
+
+        // Vídeo mais recente
+        Video videoMaisRecente = videos.stream()
+                .max(Comparator.comparing(Video::getDataPublicacao))
+                .orElse(null);
+
+        // Exibir o relatório
+        System.out.println("\n=== Relatório de Estatísticas ===");
+        System.out.println("Quantidade total de vídeos: " + totalVideos);
+        System.out.printf("Duração média dos vídeos: %.2f minutos\n", duracaoMedia);
+
+        if (videoMaisAntigo != null) {
+            System.out.println("Vídeo mais antigo: " + videoMaisAntigo.getTitulo() +
+                    " (Publicado em: " + new SimpleDateFormat("dd/MM/yyyy").format(videoMaisAntigo.getDataPublicacao()) + ")");
+        }
+
+        if (videoMaisRecente != null) {
+            System.out.println("Vídeo mais recente: " + videoMaisRecente.getTitulo() +
+                    " (Publicado em: " + new SimpleDateFormat("dd/MM/yyyy").format(videoMaisRecente.getDataPublicacao()) + ")");
+        }
     }
 
     private static Date lerDataValida(String mensagem) {
