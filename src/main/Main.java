@@ -38,6 +38,7 @@ public class Main {
                 case 2 -> listarVideos();
                 case 3 -> pesquisarVideoPorTitulo();
                 case 4 -> editarVideo();
+                case 5 -> filtrarVideoPorCategoria();
                 case 9 -> {
                     System.out.println("Saindo do sistema...");
                     return;
@@ -130,6 +131,26 @@ public class Main {
             } catch (Exception | illegalArgumentException e) {
                 System.out.println("Erro ao editar vídeo: " + e.getMessage());
             }
+        }
+    }
+
+    private static void filtrarVideoPorCategoria() {
+        // Solicita ao usuário a categoria que deseja filtrar
+        String categoria = lerString("Digite a categoria dos vídeos que deseja filtrar: ");
+
+        // Busca os vídeos correspondentes à categoria fornecida
+        List<Video> videosFiltrados = videoService.listVideos().stream()
+                .filter(video -> video.getCategoria().equalsIgnoreCase(categoria))
+                .toList();
+
+        if (videosFiltrados.isEmpty()) {
+            System.out.println("Nenhum vídeo encontrado na categoria fornecida.");
+        } else {
+            System.out.println("Vídeos encontrados na categoria '" + categoria + "':");
+            videosFiltrados.forEach(video -> {
+                System.out.println("Título: " + video.getTitulo() + " | Descrição: " + video.getDescricao() +
+                        " | Duração: " + video.getDuracao() + "min | Data de Publicação: " + video.getDataPublicacao());
+            });
         }
     }
 

@@ -2,7 +2,10 @@ package model;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 public class Video {
     private String titulo;
@@ -79,6 +82,21 @@ public class Video {
                 novaData
         );
     }
+
+    /**
+     * Método estático para organizar uma lista de vídeos por data de publicação.
+     *
+     * @param videos Lista de vídeos a ser organizada.
+     * @return Lista de vídeos organizada por data de publicação (crescente).
+     */
+    public static List<Video> organizarPorDataPublicacao(List<Video> videos) {
+        if (videos == null || videos.isEmpty()) {
+            return videos; // Retorna a lista como está se for nula ou vazia
+        }
+        Collections.sort(videos, Comparator.comparing(Video::getDataPublicacao));
+        return videos;
+    }
+
     public String toCSV() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         return String.format("%s;%s;%d;%s;%s", titulo, descricao ,duracao ,categoria, sdf.format(dataPublicacao));
