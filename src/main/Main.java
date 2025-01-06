@@ -22,48 +22,58 @@ public class Main {
     private static final SearchStrategy searchStrategy = new TitleSearchStrategy();
 
 
-    public static void main(String[] args)  {
+    // Constantes para as opções do menu
+    private static final int OPCAO_ADICIONAR_VIDEO = 1;
+    private static final int OPCAO_LISTAR_VIDEOS = 2;
+    private static final int OPCAO_PESQUISAR_VIDEO = 3;
+    private static final int OPCAO_EDITAR_VIDEO = 4;
+    private static final int OPCAO_FILTRAR_POR_CATEGORIA = 5;
+    private static final int OPCAO_ORDENAR_POR_DATA = 6;
+    private static final int OPCAO_RELATORIO_ESTATISTICAS = 7;
+    private static final int OPCAO_EXCLUIR_VIDEO = 8;
+    private static final int OPCAO_SAIR = 9;
 
+    public static void main(String[] args) {
+        boolean continuar = true;
 
-        Scanner scr = new Scanner(System.in);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-
-        while (true) {
+        while (continuar) {
             exibirMenu();
-
             int opcao = lerInteiro("Escolha uma opção: ");
 
-            switch (opcao) {
-                case 1 -> adicionarVideo();
-                case 2 -> listarVideos();
-                case 3 -> pesquisarVideoPorTitulo();
-                case 4 -> editarVideo();
-                case 5 -> filtrarVideoPorCategoria();
-                case 6 -> ordenarPorDataPublicacao();
-                case 7 -> exibirRelatorioEstatisticas();
-                case 8 -> deleteVideo();
-                case 9 -> {
-                    System.out.println("Saindo do sistema...");
-                    return;
-                }
-                default -> System.out.println("Opção invélida.");
-            }
+            continuar = processarOpcao(opcao);
         }
-
     }
 
     private static void exibirMenu() {
         System.out.println("\n=== Sistema de Gerenciamento de Vídeos ===");
-        System.out.println("1. Adicionar vídeo");
-        System.out.println("2. Listar vídeos");
-        System.out.println("3. Pesquisar vídeo por título");
-        System.out.println("4. Editar vídeo");
-        System.out.println("5. Filtrar vídeo por categoria");
-        System.out.println("6. Ordenar vídeos por data de publicação.");
-        System.out.println("7. Relatório de estatísticas.");
-        System.out.println("8. Excluir vídeo");
-        System.out.println("9. SAIR");
+        System.out.println(OPCAO_ADICIONAR_VIDEO + ". Adicionar vídeo");
+        System.out.println(OPCAO_LISTAR_VIDEOS + ". Listar vídeos");
+        System.out.println(OPCAO_PESQUISAR_VIDEO + ". Pesquisar vídeo por título");
+        System.out.println(OPCAO_EDITAR_VIDEO + ". Editar vídeo");
+        System.out.println(OPCAO_FILTRAR_POR_CATEGORIA + ". Filtrar vídeo por categoria");
+        System.out.println(OPCAO_ORDENAR_POR_DATA + ". Ordenar vídeos por data de publicação");
+        System.out.println(OPCAO_RELATORIO_ESTATISTICAS + ". Relatório de estatísticas");
+        System.out.println(OPCAO_EXCLUIR_VIDEO + ". Excluir vídeo");
+        System.out.println(OPCAO_SAIR + ". SAIR");
+    }
+
+    private static boolean processarOpcao(int opcao) {
+        switch (opcao) {
+            case OPCAO_ADICIONAR_VIDEO -> adicionarVideo();
+            case OPCAO_LISTAR_VIDEOS -> listarVideos();
+            case OPCAO_PESQUISAR_VIDEO -> pesquisarVideoPorTitulo();
+            case OPCAO_EDITAR_VIDEO -> editarVideo();
+            case OPCAO_FILTRAR_POR_CATEGORIA -> filtrarVideoPorCategoria();
+            case OPCAO_ORDENAR_POR_DATA -> ordenarPorDataPublicacao();
+            case OPCAO_RELATORIO_ESTATISTICAS -> exibirRelatorioEstatisticas();
+            case OPCAO_EXCLUIR_VIDEO -> deleteVideo();
+            case OPCAO_SAIR -> {
+                System.out.println("Saindo do sistema...");
+                return false; // Encerra o loop
+            }
+            default -> System.out.println("Opção inválida.");
+        }
+        return true; // Continua o loop
     }
 
     private static void adicionarVideo() {
@@ -84,6 +94,7 @@ public class Main {
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
+
         }
     }
 
